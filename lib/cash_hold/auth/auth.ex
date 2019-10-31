@@ -85,7 +85,7 @@ defmodule CashHold.Auth do
     user = Repo.get_by(User, email: email)
 
     cond do
-      user && user.is_active && Argon2.verify_pass(given_pass, user.password_hash) ->
+      user && Argon2.verify_pass(given_pass, user.password_hash) ->
         {conn, user} = login(conn, user)
         {:ok, conn, user}
         

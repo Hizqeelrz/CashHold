@@ -15,7 +15,7 @@ defmodule CashHoldWeb.UserView do
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
-      password_hash: user.password_hash,
+      password: user.password,
       avatar: user.avatar,
       is_deleted: user.is_deleted}
   end

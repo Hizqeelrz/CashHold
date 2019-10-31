@@ -9,5 +9,6 @@ defmodule CashHoldWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    post("/sign_in", SessionController, :sign_in)
   end
 end
