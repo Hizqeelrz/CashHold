@@ -7,5 +7,7 @@ defmodule CashHoldWeb.Router do
 
   scope "/api", CashHoldWeb do
     pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
   end
 end
