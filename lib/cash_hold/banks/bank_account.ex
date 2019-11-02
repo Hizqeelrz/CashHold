@@ -20,7 +20,7 @@ defmodule CashHold.Banks.BankAccount do
   @doc false
   def changeset(bank_account, attrs) do
     bank_account
-    |> cast(attrs, [:account_title, :account_number, :account_type, :bank_name, :branch_name, :branch_address, :branch_number])
-    |> validate_required([:account_title, :account_number, :account_type, :bank_name, :branch_name, :branch_address, :branch_number])
+    |> cast(attrs, [:account_title, :account_number, :account_type, :bank_name, :branch_name, :branch_address, :branch_number, :user_id])
+    |> validate_required([:account_title, :account_number, :bank_name, :branch_name, :branch_address, :branch_number])
   end
 end

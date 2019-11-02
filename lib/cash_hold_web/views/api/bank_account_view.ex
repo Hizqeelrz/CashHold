@@ -18,6 +18,7 @@ defmodule CashHoldWeb.Api.BankAccountView do
       bank_name: bank_account.bank_name,
       branch_name: bank_account.branch_name,
       branch_address: bank_account.branch_address,
-      branch_number: bank_account.branch_number}
+      branch_number: bank_account.branch_number,
+      user_id: bank_account.user_id}
   end
 end
