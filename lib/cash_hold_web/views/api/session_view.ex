@@ -1,6 +1,6 @@
-defmodule CashHoldWeb.SessionView do
+defmodule CashHoldWeb.Api.SessionView do
   use CashHoldWeb, :view
-  alias CashHoldWeb.{
+  alias CashHoldWeb.Api.{
                     SessionView,
                     UserView
                     }

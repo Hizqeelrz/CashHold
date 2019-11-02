@@ -1,6 +1,6 @@
-defmodule CashHoldWeb.UserView do
+defmodule CashHoldWeb.Api.UserView do
   use CashHoldWeb, :view
-  alias CashHoldWeb.UserView
+  alias CashHoldWeb.Api.UserView
 
   def render("index.json", %{users: users}) do
     %{data: render_many(users, UserView, "user.json")}

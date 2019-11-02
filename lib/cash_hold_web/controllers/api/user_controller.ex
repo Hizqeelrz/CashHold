@@ -1,4 +1,4 @@
-defmodule CashHoldWeb.UserController do
+defmodule CashHoldWeb.Api.UserController do
   use CashHoldWeb, :controller
 
   alias CashHold.Accounts

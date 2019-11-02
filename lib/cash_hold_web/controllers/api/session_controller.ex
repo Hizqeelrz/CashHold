@@ -1,4 +1,4 @@
-defmodule CashHoldWeb.SessionController do
+defmodule CashHoldWeb.Api.SessionController do
   use CashHoldWeb, :controller
   alias CashHold.Auth
   alias CashHold.Accounts
