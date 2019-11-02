@@ -11,5 +11,6 @@ defmodule CashHoldWeb.Router do
     post("/sign_in", SessionController, :sign_in)
     resources "/users", UserController, except: [:new, :edit]
     resources "/bank_account", BankAccountController, except: [:new, :edit]
+    resources "/bank_transactions", BankTransactionController, except: [:new, :edit]
   end
 end
