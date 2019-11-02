@@ -5,9 +5,9 @@ defmodule CashHold.Banks.BankTransaction do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "bank_transactions" do
-    field :balance, :string
-    field :deposit_amount, :string
-    field :withdraw_amount, :string
+    field :balance, :integer
+    field :deposit_amount, :integer
+    field :withdraw_amount, :integer
     field :user_id, :binary_id
     field :bank_account_id, :binary_id
 
