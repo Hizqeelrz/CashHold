@@ -8,7 +8,8 @@ defmodule CashHoldWeb.Router do
   scope "/api", CashHoldWeb.Api do
     pipe_through :api
 
-    resources "/users", UserController, except: [:new, :edit]
     post("/sign_in", SessionController, :sign_in)
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/bank_account", BankAccountController, except: [:new, :edit]
   end
 end
