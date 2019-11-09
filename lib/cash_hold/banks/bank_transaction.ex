@@ -17,12 +17,6 @@ defmodule CashHold.Banks.BankTransaction do
 
   @doc false
   def changeset(bank_transaction, attrs) do
-    IO.inspect "This is working inside main changset"
-    IO.inspect attrs
-    # IO.inspect attrs[:balance]
-    # IO.inspect attrs[:deposit_amount]
-    IO.inspect "This is working inside below main changset"
-
     bank_transaction
     |> cast(attrs, [:balance, :deposit_amount, :withdraw_amount, :user_id, :bank_account_id])
     |> validate_required([:balance])
@@ -78,33 +72,6 @@ defmodule CashHold.Banks.BankTransaction do
   # end
 
   # defp calculate(changeset), do: changeset
-
-  # def calculate(changeset) do
-  #   case changeset do
-  #     %{"deposit" => deposit} when not is_nil(deposit) -> 
-  #         deposit = get_change(changeset, "deposit")
-  #         changeset = put_change(changeset, deposit * 100)
-  #         current_balance = get_change
-  #         changeset
-  #     %{"withdraw" => withdraw} when not is_nil(withdraw) -> 
-  #         deposit = get_change(changeset, "deposit")
-  #         changeset = put_change(changeset, deposit * 100)
-  #         current_balance = get_change
-  #         changeset
-  #     _ ->
-  #     changset
-  #   end
-  # end
-
-  # def calculate(changeset) do
-  #   case changeset do
-  #     %{"deposit" => deposit} when not is_nil(deposit) ->
-  #       deposit = get_change(changeset "deposit")
-  #       changeset1 = put_change(changeset, deposit * 100)
-  #       current_balance = get_change(changeset,)
-  #   end
-  # end
-
 end
 
 # def calculate(%Ecto.Changeset{valid?: true, changes: %{balance: balance, deposit_amount: deposit_amount, withdraw_amount: withdraw_amount}} = changeset) do
@@ -140,15 +107,6 @@ end
 #   end
 # end
 
-# case changeset.changes do
-#   %{deposit_amount: deposit_amount} when not is_nil(deposit_amount) ->
-#     1 + 1
-#   %{deposit_amount: deposit_amount} when not is_nil(deposit_amount) ->
-#     2 + 2
-# end
-
-# changeset = Ecto.Changeset.change(%BankTransaction{}, %{balance: balance, deposit_amount: 360, withdraw_amount: nil})
-
 # def to_cents(amount) do
 #   amount * 100
 # end
@@ -156,6 +114,3 @@ end
 # def to_dollars(ammount) do
 #   amount / 100
 # end
-
-# bank_transaction_params["withdraw_amount"] == nil
-# and bank_transaction_params["deposit_amount"] !== nil
