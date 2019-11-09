@@ -117,6 +117,14 @@ defmodule CashHold.Banks do
     Repo.all(BankTransaction)
   end
 
+  # def calculate_balance do
+    
+  # end
+
+  # def deposit_and_withdraw(deposit \\ nil, withdraw \\ nil) do
+    
+  # end
+
   @doc """
   Gets a single bank_transaction.
 
