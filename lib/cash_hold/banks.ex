@@ -209,29 +209,85 @@ defmodule CashHold.Banks do
     bank_transaction_params = Map.put(bank_transaction_params, "balance", 0)
 
     balance = bank_transaction_params["balance"]
-    deposit_amount = bank_transaction_params["deposit_amount"]
+    IO.inspect balance
+    IO.inspect "initial balance"
 
-    total_balance = balance + deposit_amount
+    balance = to_cents(balance)
+    IO.inspect balance
+    IO.inspect "to cents balance"
+
+    deposit_amount = bank_transaction_params["deposit_amount"]
+    IO.inspect deposit_amount
+    IO.inspect "initial deposit"
+
+    deposit_amount = to_cents(deposit_amount)
+    IO.inspect deposit_amount
+    IO.inspect "to cents deposit amount"
+
+    total_balance = to_dollars(balance) + to_dollars(deposit_amount)
+    IO.inspect total_balance
+    IO.inspect "total balance"
+
+    total_balance = to_cents(total_balance)
+    IO.inspect total_balance
+    IO.inspect "to cents total_balance"
+
+    total_balance = Kernel.floor(total_balance)
+    IO.inspect total_balance
+    IO.inspect "kernel floor total balance"
+
+    deposit_amount = Kernel.floor(deposit_amount)
+    IO.inspect deposit_amount
+    IO.inspect "deposit_amount kernel floor"
+
     bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
+    bank_transaction_params = Map.put(bank_transaction_params, "deposit_amount", deposit_amount)
   end
 
   def sum_up_for_deposit(last_transaction, bank_transaction_params) do
     bank_transaction_params = Map.put(bank_transaction_params, "balance", last_transaction.balance)
 
     balance = bank_transaction_params["balance"]
-    deposit_amount = bank_transaction_params["deposit_amount"]
+    # balance = to_cents(balance)
 
-    total_balance = balance + deposit_amount
+    deposit_amount = bank_transaction_params["deposit_amount"]
+    deposit_amount = to_cents(deposit_amount)
+
+    total_balance = to_dollars(balance) + to_dollars(deposit_amount)
+    total_balance = to_cents(total_balance)
+    total_balance = Kernel.floor(total_balance)
+    deposit_amount = Kernel.floor(deposit_amount)
+
     bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
+    bank_transaction_params = Map.put(bank_transaction_params, "deposit_amount", deposit_amount)
   end
 
   def sub_withdraw_amount(last_transaction, bank_transaction_params) do
     bank_transaction_params = Map.put(bank_transaction_params, "balance", last_transaction.balance)
 
     balance = bank_transaction_params["balance"]
-    withdraw_amount = bank_transaction_params["withdraw_amount"]
+    # balance = to_cents(balance)
 
-    total_balance = balance - withdraw_amount
-    bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)    
+    withdraw_amount = bank_transaction_params["withdraw_amount"]
+    withdraw_amount = to_cents(withdraw_amount)
+
+    total_balance = to_dollars(balance) - to_dollars(withdraw_amount)
+    total_balance = to_cents(total_balance)
+    total_balance = Kernel.floor(total_balance)
+    withdraw_amount = Kernel.floor(withdraw_amount)
+    withdraw_amount = to_cents(withdraw_amount)
+
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
+    bank_transaction_params = Map.put(bank_transaction_params, "withdraw_amount", withdraw_amount)
+  end
+
+  # private methods
+
+  def to_cents(amount) do
+    amount * 100
+  end
+
+  def to_dollars(amount) do
+    amount / 100
   end
 end
