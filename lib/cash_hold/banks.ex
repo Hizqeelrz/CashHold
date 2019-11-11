@@ -113,8 +113,13 @@ defmodule CashHold.Banks do
       [%BankTransaction{}, ...]
 
   """
-  def list_bank_transactions do
-    Repo.all(BankTransaction)
+  def list_bank_transactions(params) do
+    query = from bt in BankTransaction, order_by: [asc: bt.id]
+    query = if is_nil(params["balance"]), do: query, else: from b in query, where: b.balance == ^params["balance"]
+    query = if is_nil(params["deposit_amount"]), do: query, else: from b in query, where: b.deposit_amount == ^params["deposit_amount"]
+    query = if is_nil(params["withdraw_amount"]), do: query, else: from b in query, where: b.withdraw_amount == ^params["withdraw_amount"]
+    query = if is_nil(params["inserted_at"]), do: query, else: from b in query, where: b.inserted_at == ^params["inserted_at"]
+    Repo.all(query)
   end
 
   def account_last_transaction do

@@ -15,6 +15,7 @@ defmodule CashHoldWeb.Api.BankTransactionView do
       balance: bank_transaction.balance / 100,
       deposit_amount: bank_transaction.deposit_amount,
       withdraw_amount: bank_transaction.withdraw_amount,
+      inserted_at: bank_transaction.inserted_at,
     }
   end
 end

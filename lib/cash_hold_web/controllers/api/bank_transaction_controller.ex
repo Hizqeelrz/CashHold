@@ -9,9 +9,34 @@ defmodule CashHoldWeb.Api.BankTransactionController do
 
   action_fallback CashHoldWeb.FallbackController
 
-  def index(conn, _params) do
-    bank_transactions = Banks.list_bank_transactions()
-    render(conn, "index.json", bank_transactions: bank_transactions)
+  def index(conn, params) do
+
+    IO.inspect params
+
+    if params["balance"] do
+      val = params["balance"]
+      val = String.to_float(val)
+      val = floor(val * 100)
+      params = Map.put(params, "balance", val)
+
+      bank_transactions = Banks.list_bank_transactions(params)
+      render(conn, "index.json", bank_transactions: bank_transactions)
+    else
+      bank_transactions = Banks.list_bank_transactions(params)
+      render(conn, "index.json", bank_transactions: bank_transactions)
+    end
+
+    # if (params["inserted_at"]) do
+    #   val = params["inserted_at"]
+    #   val = NaiveDateTime.to_date(val)
+    #   params = Map.put(params, "inserted_at", val)
+
+    #   bank_transactions = Banks.list_bank_transactions(params)
+    #   render(conn, "index.json", bank_transactions: bank_transactions)
+    # else
+    #   bank_transactions = Banks.list_bank_transactions(params)
+    #   render(conn, "index.json", bank_transactions: bank_transactions)
+    # end
   end
 
   def create(conn, bank_transaction_params) do
