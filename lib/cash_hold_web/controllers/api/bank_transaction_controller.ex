@@ -16,9 +16,9 @@ defmodule CashHoldWeb.Api.BankTransactionController do
 
   def create(conn, bank_transaction_params) do
 
-    query = Ecto.Query.from(u in BankTransaction) |> Ecto.Query.last(:inserted_at) |> Repo.one
+    transaction = Banks.last_transaction
 
-    case query do
+    case transaction do
       nil ->
         bank_transaction_params = Map.put(bank_transaction_params, "balance", 0)
 
@@ -34,9 +34,9 @@ defmodule CashHoldWeb.Api.BankTransactionController do
           |> put_resp_header("location", Routes.bank_transaction_path(conn, :show, bank_transaction))
           |> render("show.json", bank_transaction: bank_transaction)
         end
-      query ->
+      transaction ->
         if (bank_transaction_params["deposit_amount"] !== nil) do
-          bank_transaction_params = Map.put(bank_transaction_params, "balance", query.balance)
+          bank_transaction_params = Map.put(bank_transaction_params, "balance", transaction.balance)
 
           balance = bank_transaction_params["balance"]
           deposit_amount = bank_transaction_params["deposit_amount"]
@@ -51,7 +51,7 @@ defmodule CashHoldWeb.Api.BankTransactionController do
             |> render("show.json", bank_transaction: bank_transaction)
           end
         else if ( bank_transaction_params["withdraw_amount"] !== nil) do
-          bank_transaction_params = Map.put(bank_transaction_params, "balance", query.balance)
+          bank_transaction_params = Map.put(bank_transaction_params, "balance", transaction.balance)
 
           balance = bank_transaction_params["balance"]
           withdraw_amount = bank_transaction_params["withdraw_amount"]

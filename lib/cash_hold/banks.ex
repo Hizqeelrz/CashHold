@@ -117,13 +117,9 @@ defmodule CashHold.Banks do
     Repo.all(BankTransaction)
   end
 
-  # def calculate_balance do
-    
-  # end
-
-  # def deposit_and_withdraw(deposit \\ nil, withdraw \\ nil) do
-    
-  # end
+  def last_transaction do
+    query = Ecto.Query.from(u in BankTransaction) |> Ecto.Query.last(:inserted_at) |> Repo.one    
+  end
 
   @doc """
   Gets a single bank_transaction.
