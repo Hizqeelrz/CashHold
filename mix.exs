@@ -43,6 +43,7 @@ defmodule CashHold.MixProject do
       {:comeonin, "~> 5.1"},
       {:argon2_elixir, "~> 2.1"},
       {:joken, "~> 2.1"},
+      {:timex, "~> 3.6"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end
