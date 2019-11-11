@@ -117,8 +117,9 @@ defmodule CashHold.Banks do
     Repo.all(BankTransaction)
   end
 
-  def last_transaction do
-    query = Ecto.Query.from(u in BankTransaction) |> Ecto.Query.last(:inserted_at) |> Repo.one    
+  def account_last_transaction do
+    Ecto.Query.from(u in BankTransaction) 
+    |> Ecto.Query.last(:inserted_at) |> Repo.one
   end
 
   @doc """
@@ -200,5 +201,37 @@ defmodule CashHold.Banks do
   """
   def change_bank_transaction(%BankTransaction{} = bank_transaction) do
     BankTransaction.changeset(bank_transaction, %{})
+  end
+
+  # refactored methods for bank transaction
+
+  def sum_up_for_nil(bank_transaction_params) do
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", 0)
+
+    balance = bank_transaction_params["balance"]
+    deposit_amount = bank_transaction_params["deposit_amount"]
+
+    total_balance = balance + deposit_amount
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
+  end
+
+  def sum_up_for_deposit(last_transaction, bank_transaction_params) do
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", last_transaction.balance)
+
+    balance = bank_transaction_params["balance"]
+    deposit_amount = bank_transaction_params["deposit_amount"]
+
+    total_balance = balance + deposit_amount
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
+  end
+
+  def sub_withdraw_amount(last_transaction, bank_transaction_params) do
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", last_transaction.balance)
+
+    balance = bank_transaction_params["balance"]
+    withdraw_amount = bank_transaction_params["withdraw_amount"]
+
+    total_balance = balance - withdraw_amount
+    bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)    
   end
 end
