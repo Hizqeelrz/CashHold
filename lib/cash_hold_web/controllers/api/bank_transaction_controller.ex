@@ -12,8 +12,8 @@ defmodule CashHoldWeb.Api.BankTransactionController do
   def index(conn, params) do
 
     IO.inspect params
-
     if params["balance"] do
+      IO.inspect "inside balance"
       val = params["balance"]
       val = String.to_float(val)
       val = floor(val * 100)
@@ -21,22 +21,20 @@ defmodule CashHoldWeb.Api.BankTransactionController do
 
       bank_transactions = Banks.list_bank_transactions(params)
       render(conn, "index.json", bank_transactions: bank_transactions)
+    # if (params["inserted_at"]) do
+    #   IO.inspect "inside inserted_at"
+    #   val = params["inserted_at"]
+    #   # val = Timex.parse!(val, "{YYYY}-{0M}-{D}")
+    #   val = Date.from_iso8601!(val)
+    #   params = Map.put(params, "inserted_at", val)
+    #   IO.inspect params
+
+      bank_transactions = Banks.list_bank_transactions(params)
+      render(conn, "index.json", bank_transactions: bank_transactions)
     else
       bank_transactions = Banks.list_bank_transactions(params)
       render(conn, "index.json", bank_transactions: bank_transactions)
     end
-
-    # if (params["inserted_at"]) do
-    #   val = params["inserted_at"]
-    #   val = NaiveDateTime.to_date(val)
-    #   params = Map.put(params, "inserted_at", val)
-
-    #   bank_transactions = Banks.list_bank_transactions(params)
-    #   render(conn, "index.json", bank_transactions: bank_transactions)
-    # else
-    #   bank_transactions = Banks.list_bank_transactions(params)
-    #   render(conn, "index.json", bank_transactions: bank_transactions)
-    # end
   end
 
   def create(conn, bank_transaction_params) do

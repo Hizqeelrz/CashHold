@@ -23,7 +23,7 @@ defmodule CashHoldWeb.Api.BankTransactionView do
     if not is_nil(date) do 
       t = date
           |> Timex.Timezone.convert("Asia/Karachi")
-      "#{t.month}/#{t.day}/#{t.year} #{t.hour}:#{t.minute}:#{t.second}"
+      "#{t.year}-#{t.month}-#{t.day} #{t.hour}:#{t.minute}:#{t.second}"
     end
   end
 end
