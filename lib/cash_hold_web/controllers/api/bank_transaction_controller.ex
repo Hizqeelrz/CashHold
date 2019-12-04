@@ -97,4 +97,25 @@ defmodule CashHoldWeb.Api.BankTransactionController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def export(conn, _params) do
+    headers = "Id;Balance;Withdraw_amount;Deposit_amount;User_d;Bank_Account_Id;Inserted_at;\n"
+    csv_content = [headers | csv_content]
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"BankTransaction.csv\"")
+    |> send_resp(200, csv_content)
+  end
+
+  defp csv_content do
+    # csv_content = [['a', 'list'], ['of', 'lists', 'of lists']]
+    csv_content = 
+      Banks.csv_to_export
+      |> Enum.map(fn %{id: id, balance: balance, withdraw_amount: wamount, deposit_amount: damount, user_id: ui, bank_account_id: bai, inserted_at: ia} -> 
+        "#{id};#{balance};#{wamount};#{damount}#{ui};#{bai};#{ia}\n"
+      end)
+  end
 end
+
+# a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end)
+# a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end) |> CSV.encode |> Enum.to_list |> to_string

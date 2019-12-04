@@ -16,6 +16,8 @@ defmodule CashHoldWeb.Api.BankTransactionView do
       deposit_amount: bank_transaction.deposit_amount,
       withdraw_amount: bank_transaction.withdraw_amount,
       inserted_at: date(bank_transaction.inserted_at),
+      user_id: bank_transaction.user_id,
+      bank_account_id: bank_transaction.bank_account_id
     }
   end
 

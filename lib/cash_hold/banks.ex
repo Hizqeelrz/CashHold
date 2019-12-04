@@ -138,6 +138,10 @@ defmodule CashHold.Banks do
     |> Ecto.Query.last(:inserted_at) |> Repo.one
   end
 
+  def csv_to_export do
+    query = from bt in BankTransaction #, where: bt.deposit_amount == 755095
+    Repo.all(query)
+  end
   @doc """
   Gets a single bank_transaction.
 
