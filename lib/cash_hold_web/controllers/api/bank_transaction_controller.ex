@@ -116,8 +116,8 @@ defmodule CashHoldWeb.Api.BankTransactionController do
     |> CSV.decode!(separator: ?;, validate_row_length: false, headers: [:id, :balance, :deposit_amount, 
                                                                         :withdraw_amount, :user_id, 
                                                                         :bank_account_id, :inserted_at])
-    |> Enum.take(1) #not neccessary
-    |> Enum.each(fn bank -> CashHold.Banks.BankTransaction.changeset(%BankTransaction{}, %{}) |> Repo.insert end)
+    |> Enum.take_while(fn x -> x > 1 end)
+    |> Enum.each(fn bank -> CashHold.Banks.BankTransaction.changeset(%BankTransaction{}, IO.isnpect bank) |> Repo.insert end)
   end
 
   defp csv_content do
@@ -129,8 +129,3 @@ defmodule CashHoldWeb.Api.BankTransactionController do
       end)
   end
 end
-
-# a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end)
-# a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end) |> CSV.encode |> Enum.to_list |> to_string
-
-# File.stream!("/home/hizqeel/Downloads/BankTransaction.csv") |> CSV.decode |> Enum.each(fn bank -> CashHold.Banks.BankTransaction.changeset(%BankTransaction{}, %{}) |> Repo.insert end)
