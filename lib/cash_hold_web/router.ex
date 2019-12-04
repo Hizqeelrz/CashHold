@@ -13,5 +13,6 @@ defmodule CashHoldWeb.Router do
     resources "/bank_account", BankAccountController, except: [:new, :edit]
     resources "/bank_transactions", BankTransactionController, except: [:new, :edit]
     get "/csv", BankTransactionController, :export
+    post "/import", BankTransactionController, :import
   end
 end

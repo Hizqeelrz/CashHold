@@ -99,12 +99,25 @@ defmodule CashHoldWeb.Api.BankTransactionController do
   end
 
   def export(conn, _params) do
-    headers = "Id;Balance;Withdraw_amount;Deposit_amount;User_d;Bank_Account_Id;Inserted_at;\n"
+    headers = "Id;Balance;Deposit_amount;Withdraw_amount;User_d;Bank_Account_Id;Inserted_at;\n"
     csv_content = [headers | csv_content]
     conn
     |> put_resp_content_type("text/csv")
     |> put_resp_header("content-disposition", "attachment; filename=\"BankTransaction.csv\"")
     |> send_resp(200, csv_content)
+  end
+
+  def import(conn, _params) do
+    file = ("/home/hizqeel/Downloads/BankTransaction.csv")
+
+    file
+    |> File.stream!()
+    |> Stream.map(&(&1))
+    |> CSV.decode!(separator: ?;, validate_row_length: false, headers: [:id, :balance, :deposit_amount, 
+                                                                        :withdraw_amount, :user_id, 
+                                                                        :bank_account_id, :inserted_at])
+    |> Enum.take(1) #not neccessary
+    |> Enum.each(fn bank -> CashHold.Banks.BankTransaction.changeset(%BankTransaction{}, %{}) |> Repo.insert end)
   end
 
   defp csv_content do
@@ -119,3 +132,5 @@ end
 
 # a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end)
 # a |> Map.from_struct |> Enum.drop(1) |> Map.new |> Enum.map(fn {k, v}-> [to_string(k), to_string(v)] end) |> CSV.encode |> Enum.to_list |> to_string
+
+# File.stream!("/home/hizqeel/Downloads/BankTransaction.csv") |> CSV.decode |> Enum.each(fn bank -> CashHold.Banks.BankTransaction.changeset(%BankTransaction{}, %{}) |> Repo.insert end)
