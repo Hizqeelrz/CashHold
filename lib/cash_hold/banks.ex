@@ -129,18 +129,18 @@ defmodule CashHold.Banks do
     IO.inspect max
 
 
-    query = from bt in BankTransaction, order_by: [asc: bt.id]
+    query = from bt in BankTransaction
 
-    query = if params["name"] == "balance", do: (from b in query, where: b.balance > ^min and b.balance < ^max), else: query
-    query = if params["name"] == "deposit_amount", do: (from b in query, where: b.deposit_amount > ^min and b.deposit_amount < ^max), else: query
-    query = if params["name"] == "withdraw_amount", do: (from b in query, where: b.withdraw_amount > ^min and b.withdraw_amount < ^max), else: query
+    query = if params["name"] == "balance", do: (from t in query, where: t.balance > ^min and t.balance < ^max), else: query
+    query = if params["name"] == "deposit_amount", do: (from t in query, where: t.deposit_amount > ^min and t.deposit_amount < ^max), else: query
+    query = if params["name"] == "withdraw_amount", do: (from t in query, where: t.withdraw_amount > ^min and t.withdraw_amount < ^max), else: query
 
     Repo.all(query)
   end
 
   defp parse_amount(num) do
     case Integer.parse(num) do
-      {num, _} -> num * 100
+      {num, _} -> num
       _ -> 0
     end
   end
