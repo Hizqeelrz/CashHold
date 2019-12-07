@@ -13,7 +13,7 @@ defmodule CashHoldWeb.Api.BankTransactionView do
   def render("bank_transaction.json", %{bank_transaction: bank_transaction}) do
     %{id: bank_transaction.id,
       balance: bank_transaction.balance / 100,
-      deposit_amount: bank_transaction.deposit_amount,
+      deposit_amount: bank_transaction.deposit_amount / 100,
       withdraw_amount: bank_transaction.withdraw_amount,
       inserted_at: date(bank_transaction.inserted_at),
       user_id: bank_transaction.user_id,

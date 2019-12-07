@@ -11,7 +11,7 @@ defmodule CashHoldWeb.Api.BankAccountController do
     render(conn, "index.json", bank_account: bank_account)
   end
 
-  def create(conn, %{"bank_account" => bank_account_params}) do
+  def create(conn, bank_account_params) do
     with {:ok, %BankAccount{} = bank_account} <- Banks.create_bank_account(bank_account_params) do
       conn
       |> put_status(:created)

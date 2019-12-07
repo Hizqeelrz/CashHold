@@ -115,22 +115,34 @@ defmodule CashHold.Banks do
   """
   def list_bank_transactions(params) do
 
+    IO.inspect params
     # today = Timex.to_naive_datetime(Timex.today)
     today = Timex.today
     sday = Timex.beginning_of_year(today)
     eday = Timex.end_of_year(today)
 
+
+    min = parse_amount(params["min"])
+    max = parse_amount(params["max"])
+
+    IO.inspect min
+    IO.inspect max
+
+
     query = from bt in BankTransaction, order_by: [asc: bt.id]
-    query = if is_nil(params["balance"]), do: query, else: from b in query, where: b.balance == ^params["balance"]
-    query = if is_nil(params["deposit_amount"]), do: query, else: from b in query, where: b.deposit_amount == ^params["deposit_amount"]
-    query = if is_nil(params["withdraw_amount"]), do: query, else: from b in query, where: b.withdraw_amount == ^params["withdraw_amount"]
-    # query = if is_nil(params["inserted_at"]), do: query, else: from b in query, where: ilike(b.inserted_at, ^"%#{params["inserted_at"]}%")
-    query = if is_nil(params["inserted_at"]), do: query,
-                                              else: from b in query,
-                                              where: fragment("DATE(inserted_at) >= ?", ^sday) and fragment("DATE(inserted_at) <= ?", ^eday)
-                                              # where: b.inserted_at >= ^sday and b.inserted_at <= ^eday
-                                              # where: b.inserted_at <= ^eday
+
+    query = if params["name"] == "balance", do: (from b in query, where: b.balance > ^min and b.balance < ^max), else: query
+    query = if params["name"] == "deposit_amount", do: (from b in query, where: b.deposit_amount > ^min and b.deposit_amount < ^max), else: query
+    query = if params["name"] == "withdraw_amount", do: (from b in query, where: b.withdraw_amount > ^min and b.withdraw_amount < ^max), else: query
+
     Repo.all(query)
+  end
+
+  defp parse_amount(num) do
+    case Integer.parse(num) do
+      {num, _} -> num * 100
+      _ -> 0
+    end
   end
 
   def account_last_transaction do
@@ -229,36 +241,16 @@ defmodule CashHold.Banks do
     bank_transaction_params = Map.put(bank_transaction_params, "balance", 0)
 
     balance = bank_transaction_params["balance"]
-    IO.inspect balance
-    IO.inspect "initial balance"
-
     balance = to_cents(balance)
-    IO.inspect balance
-    IO.inspect "to cents balance"
 
     deposit_amount = bank_transaction_params["deposit_amount"]
-    IO.inspect deposit_amount
-    IO.inspect "initial deposit"
-
     deposit_amount = to_cents(deposit_amount)
-    IO.inspect deposit_amount
-    IO.inspect "to cents deposit amount"
 
     total_balance = to_dollars(balance) + to_dollars(deposit_amount)
-    IO.inspect total_balance
-    IO.inspect "total balance"
-
     total_balance = to_cents(total_balance)
-    IO.inspect total_balance
-    IO.inspect "to cents total_balance"
 
     total_balance = Kernel.floor(total_balance)
-    IO.inspect total_balance
-    IO.inspect "kernel floor total balance"
-
     deposit_amount = Kernel.floor(deposit_amount)
-    IO.inspect deposit_amount
-    IO.inspect "deposit_amount kernel floor"
 
     bank_transaction_params = Map.put(bank_transaction_params, "balance", total_balance)
     bank_transaction_params = Map.put(bank_transaction_params, "deposit_amount", deposit_amount)

@@ -12,6 +12,7 @@ defmodule CashHold.Banks.BankAccount do
     field :branch_address, :string
     field :branch_name, :string
     field :branch_number, :string
+    field :current_balance, :integer
     field :user_id, :binary_id
 
     timestamps()
@@ -20,7 +21,7 @@ defmodule CashHold.Banks.BankAccount do
   @doc false
   def changeset(bank_account, attrs) do
     bank_account
-    |> cast(attrs, [:account_title, :account_number, :account_type, :bank_name, :branch_name, :branch_address, :branch_number, :user_id])
-    |> validate_required([:account_title, :account_number, :bank_name, :branch_name, :branch_address, :branch_number])
+    |> cast(attrs, [:current_balance, :account_title, :account_number, :account_type, :bank_name, :branch_name, :branch_address, :branch_number, :user_id])
+    |> validate_required([:current_balance])
   end
 end
