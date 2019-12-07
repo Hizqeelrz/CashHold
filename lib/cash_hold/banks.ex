@@ -114,22 +114,16 @@ defmodule CashHold.Banks do
 
   """
   def list_bank_transactions(params) do
-
-    IO.inspect params
-    # today = Timex.to_naive_datetime(Timex.today)
-    today = Timex.today
-    sday = Timex.beginning_of_year(today)
-    eday = Timex.end_of_year(today)
-
+    start_day = parse_date(params["start_date"])
+    end_day = parse_date(params["end_date"])
 
     min = parse_amount(params["min"])
     max = parse_amount(params["max"])
 
-    IO.inspect min
-    IO.inspect max
-
-
     query = from bt in BankTransaction
+    
+    query = if not is_nil(start_day), do: (from t in query, where: fragment("DATE(inserted_at) > ?", ^start_day)), else: query
+    query = if not is_nil(end_day), do: (from t in query, where: fragment("DATE(inserted_at) <= ?", ^end_day)), else: query
 
     query = if params["name"] == "balance", do: (from t in query, where: t.balance > ^min and t.balance < ^max), else: query
     query = if params["name"] == "deposit_amount", do: (from t in query, where: t.deposit_amount > ^min and t.deposit_amount < ^max), else: query
@@ -142,6 +136,13 @@ defmodule CashHold.Banks do
     case Integer.parse(num) do
       {num, _} -> num
       _ -> 0
+    end
+  end
+
+  defp parse_date(date) do
+    case Date.from_iso8601(date) do
+      {:ok, date} -> date
+      {:error, _} -> nil
     end
   end
 
@@ -303,3 +304,9 @@ defmodule CashHold.Banks do
     amount / 100
   end
 end
+  # def db_timestamp_conversion(timestamp) do
+  #   timestamp
+  #   |> Enum.take_while(fn x -> x > 0 end) 
+  #   |> Enum.map(fn x -> NaiveDateTime.to_date(x) end)
+  #   # |> Date.to_string
+  # end
