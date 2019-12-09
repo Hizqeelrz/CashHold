@@ -304,9 +304,3 @@ defmodule CashHold.Banks do
     amount / 100
   end
 end
-  # def db_timestamp_conversion(timestamp) do
-  #   timestamp
-  #   |> Enum.take_while(fn x -> x > 0 end) 
-  #   |> Enum.map(fn x -> NaiveDateTime.to_date(x) end)
-  #   # |> Date.to_string
-  # end
