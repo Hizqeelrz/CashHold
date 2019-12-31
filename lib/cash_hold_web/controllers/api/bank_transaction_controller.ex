@@ -67,7 +67,6 @@ defmodule CashHoldWeb.Api.BankTransactionController do
   end
 
   defp csv_content do
-    # csv_content = [['a', 'list'], ['of', 'lists', 'of lists']]
     csv_content = 
       Banks.csv_to_export
       |> Enum.map(fn %{id: id, balance: balance, deposit_amount: damount, withdraw_amount: wamount, user_id: ui, bank_account_id: bai, inserted_at: ia} -> 

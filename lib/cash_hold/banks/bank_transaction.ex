@@ -21,3 +21,4 @@ defmodule CashHold.Banks.BankTransaction do
     |> cast(attrs, [:balance, :deposit_amount, :withdraw_amount, :user_id, :bank_account_id])
     |> validate_required([:balance])
   end
+end
